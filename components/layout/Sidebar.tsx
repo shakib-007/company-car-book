@@ -4,19 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { NavItem } from "@/lib/types";
 
-const SECTION_BY_HREF: Record<string, string> = {
-  "/admin/dashboard": "Overview",
-  "/admin/requests": "Overview",
-  "/admin/calendar": "Overview",
-  "/admin/map": "Overview",
-  "/admin/cars": "Fleet",
-  "/admin/drivers": "Fleet",
-  "/admin/registrations": "Fleet",
-  "/employee/requests": "Requests",
-  "/employee/requests/new": "Requests",
-  "/driver/trips": "Trips",
-};
-
 export function Sidebar({
   items,
   open,
@@ -27,7 +14,6 @@ export function Sidebar({
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
-  const groups = groupItems(items);
 
   return (
     <aside
@@ -35,50 +21,32 @@ export function Sidebar({
     >
       <div className="px-5 pb-4 pt-6">
         <Link href="/" className="block">
-          <span className="block text-[15px] font-bold tracking-tight text-neutral-950">CARBOOK</span>
-          <span className="mt-0.5 block text-[11px] text-slate-400">Company Car Booking</span>
+          <span className="block text-[15px] font-bold tracking-tight text-neutral-950">EmpFleet</span>
+          <span className="mt-0.5 block text-[11px] text-slate-400">Company car booking</span>
         </Link>
       </div>
-      <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto px-3 pb-6">
-        {groups.map((group) => (
-          <div key={group.label}>
-            <p className="px-3 pb-2 text-[11px] font-medium text-slate-400">{group.label}</p>
-            <div className="space-y-0.5">
-              {group.items.map((item) => {
-                const active = isActive(pathname, item.href, items);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onNavigate}
-                    className={`flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-neutral-950 text-white"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                    }`}
-                  >
-                    <NavIcon href={item.href} />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto px-3 pb-6">
+        {items.map((item) => {
+          const active = isActive(pathname, item.href, items);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onNavigate}
+              className={`flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition-colors ${
+                active
+                  ? "bg-neutral-950 text-white"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <NavIcon href={item.href} />
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );
-}
-
-function groupItems(items: NavItem[]) {
-  const groups: { label: string; items: NavItem[] }[] = [];
-  for (const item of items) {
-    const label = SECTION_BY_HREF[item.href] ?? "Menu";
-    const last = groups[groups.length - 1];
-    if (last?.label === label) last.items.push(item);
-    else groups.push({ label, items: [item] });
-  }
-  return groups;
 }
 
 function isActive(pathname: string, href: string, items: NavItem[]) {

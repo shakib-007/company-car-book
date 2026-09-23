@@ -8,6 +8,7 @@ import { LoadingState } from "@/components/ui/LoadingState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
+import { DeleteIcon, EditIcon, IconAction } from "@/components/ui/IconAction";
 import { Modal } from "@/components/ui/Modal";
 import { DriverForm, type DriverFormValues } from "@/components/forms/DriverForm";
 import type { Driver, User } from "@/lib/types";
@@ -131,17 +132,13 @@ export default function DriversPage() {
                     <td className="px-4 py-3">{driver.onLeaveDates.join(", ") || "-"}</td>
                     <td className="px-4 py-3">{user ? <StatusBadge status={user.status} /> : "-"}</td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={() => setEditing({ driver, user })}
-                        >
-                          Edit
-                        </Button>
-                        <Button type="button" variant="danger" onClick={() => removeDriver(driver)}>
-                          Delete
-                        </Button>
+                      <div className="flex gap-1.5">
+                        <IconAction label="Edit" tone="secondary" onClick={() => setEditing({ driver, user })}>
+                          <EditIcon />
+                        </IconAction>
+                        <IconAction label="Delete" tone="danger" onClick={() => removeDriver(driver)}>
+                          <DeleteIcon />
+                        </IconAction>
                       </div>
                     </td>
                   </tr>

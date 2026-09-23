@@ -22,21 +22,13 @@ export function AuthBrandPanel() {
       />
 
       <div className="relative z-10 max-w-lg">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-xs font-semibold uppercase tracking-[0.35em] text-teal-100"
-        >
-          Apex Fleet
-        </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.12 }}
           className="mt-4 text-4xl font-semibold leading-tight lg:text-5xl"
         >
-          Company Car Booking
+          EmpFleet
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

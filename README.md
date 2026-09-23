@@ -1,4 +1,4 @@
-# Company Car Booking Prototype
+# EmpFleet
 
 Working Next.js 15 prototype for company car booking and trip management. The UI talks to a mock REST API from json-server.
 

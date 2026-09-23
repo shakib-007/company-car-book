@@ -9,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Company Car Booking",
+  title: "EmpFleet",
   description: "Company car booking and trip management prototype",
 };
 

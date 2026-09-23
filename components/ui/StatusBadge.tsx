@@ -24,7 +24,7 @@ export function StatusBadge({
 }) {
   return (
     <span
-      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${styles[status] || "bg-slate-100 text-slate-700"}`}
+      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold capitalize ${styles[status] || "bg-slate-100 text-slate-700"}`}
     >
       {labelStatus(status as TripStatus)}
     </span>

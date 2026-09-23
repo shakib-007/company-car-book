@@ -8,6 +8,7 @@ import { LoadingState } from "@/components/ui/LoadingState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
+import { DeleteIcon, EditIcon, IconAction } from "@/components/ui/IconAction";
 import { Modal } from "@/components/ui/Modal";
 import { CarForm, type CarFormValues } from "@/components/forms/CarForm";
 import type { Car } from "@/lib/types";
@@ -41,7 +42,7 @@ export default function CarsPage() {
     <div>
       <PageHeader
         title="Cars"
-        subtitle="Fleet vehicles"
+        subtitle="Company vehicles"
         actions={
           <Button type="button" onClick={() => setCreating(true)}>
             Add car
@@ -76,13 +77,13 @@ export default function CarsPage() {
                     <StatusBadge status={car.status} />
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      <Button type="button" variant="secondary" onClick={() => setEditing(car)}>
-                        Edit
-                      </Button>
-                      <Button type="button" variant="danger" onClick={() => removeCar(car.id)}>
-                        Delete
-                      </Button>
+                    <div className="flex gap-1.5">
+                      <IconAction label="Edit" tone="secondary" onClick={() => setEditing(car)}>
+                        <EditIcon />
+                      </IconAction>
+                      <IconAction label="Delete" tone="danger" onClick={() => removeCar(car.id)}>
+                        <DeleteIcon />
+                      </IconAction>
                     </div>
                   </td>
                 </tr>

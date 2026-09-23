@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { notifyDriverUser, notifyUser } from "@/lib/notifications";
@@ -11,7 +11,6 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { LoadingState } from "@/components/ui/LoadingState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { AssignForm } from "@/components/forms/AssignForm";
 import { NoteForm } from "@/components/forms/NoteForm";
@@ -220,34 +219,38 @@ export default function AdminRequestsPage() {
                     <p className="text-slate-500">{carOf(request.carId)}</p>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5">
                       {["pending", "assigned", "accepted"].includes(request.status) ? (
-                        <Button type="button" onClick={() => setAssigning(request)}>
-                          {request.driverId ? "Reassign" : "Assign"}
-                        </Button>
+                        <IconButton
+                          label={request.driverId ? "Reassign" : "Assign"}
+                          tone="primary"
+                          onClick={() => setAssigning(request)}
+                        >
+                          {request.driverId ? <ReassignIcon /> : <AssignIcon />}
+                        </IconButton>
                       ) : null}
                       {["pending", "assigned"].includes(request.status) ? (
-                        <Button
-                          type="button"
-                          variant="danger"
+                        <IconButton
+                          label="Reject"
+                          tone="danger"
                           onClick={() => setNoting({ request, action: "rejected" })}
                         >
-                          Reject
-                        </Button>
+                          <RejectIcon />
+                        </IconButton>
                       ) : null}
                       {!["completed", "rejected", "cancelled"].includes(request.status) ? (
-                        <Button
-                          type="button"
-                          variant="secondary"
+                        <IconButton
+                          label="Cancel"
+                          tone="secondary"
                           onClick={() => setNoting({ request, action: "cancelled" })}
                         >
-                          Cancel
-                        </Button>
+                          <CancelIcon />
+                        </IconButton>
                       ) : null}
                       {request.status === "completed" ? (
                         <Link
                           href={`/admin/replay/${request.id}`}
-                          className="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                          className="inline-flex min-w-[8.5rem] items-center justify-center whitespace-nowrap rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
                         >
                           Replay route
                         </Link>
@@ -283,5 +286,69 @@ export default function AdminRequestsPage() {
         />
       </Modal>
     </div>
+  );
+}
+
+function IconButton({
+  label,
+  tone,
+  onClick,
+  children,
+}: {
+  label: string;
+  tone: "primary" | "secondary" | "danger";
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  const tones = {
+    primary: "bg-teal-600 text-white hover:bg-teal-700",
+    secondary: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+    danger: "bg-red-600 text-white hover:bg-red-700",
+  };
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      onClick={onClick}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tones[tone]}`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function AssignIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 19v-1.2A3.8 3.8 0 0 0 12.2 14H7.8A3.8 3.8 0 0 0 4 17.8V19" />
+      <circle cx="10" cy="8" r="3" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 8v6M16 11h6" />
+    </svg>
+  );
+}
+
+function ReassignIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h13l-3-3M20 16H7l3 3" />
+    </svg>
+  );
+}
+
+function RejectIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
+function CancelIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <circle cx="12" cy="12" r="8" />
+      <path strokeLinecap="round" d="M7 17 17 7" />
+    </svg>
   );
 }
