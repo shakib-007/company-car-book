@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Company Car Booking Prototype
 
-## Getting Started
+Working Next.js 15 prototype for company car booking and trip management. The UI talks to a mock REST API from json-server.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 18+
+- Two terminals (API + web app)
+
+## Setup
+
+```bash
+cd D:\company-car-booking
+npm install
+```
+
+## Run
+
+Terminal 1 — mock API:
+
+```bash
+npm run json-server
+```
+
+This serves `db.json` at `http://127.0.0.1:3001`.
+
+Terminal 2 — Next.js app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo accounts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | admin@company.com | Admin123! |
+| Employee | farhana@company.com | Emp123! |
+| Employee | imran@company.com | Emp123! |
+| Driver | karim@company.com | Drv123! |
+| Driver | shahid@company.com | Drv123! |
+| Driver | rina@company.com | Drv123! |
 
-## Learn More
+`nadia@company.com` / `Emp123!` is a **pending** employee and cannot sign in until an admin approves the registration.
 
-To learn more about Next.js, take a look at the following resources:
+## What to try
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Sign in as Farhana and open **My requests** (pending, assigned, completed).
+2. Sign in as admin: approve registrations, assign the pending Uttara trip, inspect the calendar and live map.
+3. Sign in as Karim to see the in-progress Motijheel trip; Shahidul has an assigned airport drop to Accept.
+4. Open **Live map** as admin (seeded GPS points). Open **Replay route** on the completed Dhanmondi → Uttara trip.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Stack
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 15 App Router, Tailwind CSS v3
+- Formik + Yup on every form
+- json-server (`db.json`)
+- Leaflet + React-Leaflet with OpenStreetMap tiles

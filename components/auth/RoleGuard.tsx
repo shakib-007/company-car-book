@@ -4,9 +4,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { homePath } from "@/lib/auth";
+import type { Role } from "@/lib/types";
 import { PageLoader } from "@/components/ui/PageLoader";
 
-export default function HomePage() {
+export function RoleGuard({
+  role,
+  children,
+}: {
+  role: Role;
+  children: React.ReactNode;
+}) {
   const { session, ready } = useAuth();
   const router = useRouter();
 
@@ -16,8 +23,14 @@ export default function HomePage() {
       router.replace("/login");
       return;
     }
-    router.replace(homePath(session.role));
-  }, [ready, router, session]);
+    if (session.role !== role) {
+      router.replace(homePath(session.role));
+    }
+  }, [ready, role, router, session]);
 
-  return <PageLoader />;
+  if (!ready || !session || session.role !== role) {
+    return <PageLoader />;
+  }
+
+  return <>{children}</>;
 }

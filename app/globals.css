@@ -1,26 +1,48 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-slate-100 text-slate-900 antialiased;
 }
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  font-family: inherit;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 10rem repeat(16, minmax(0, 1fr));
+}
+
+.timeline-hours {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+}
+
+.timeline-track {
+  position: relative;
+  grid-column: 2 / -1;
+}
+
+.tl-s1 { grid-column-start: 1; } .tl-s2 { grid-column-start: 2; } .tl-s3 { grid-column-start: 3; }
+.tl-s4 { grid-column-start: 4; } .tl-s5 { grid-column-start: 5; } .tl-s6 { grid-column-start: 6; }
+.tl-s7 { grid-column-start: 7; } .tl-s8 { grid-column-start: 8; } .tl-s9 { grid-column-start: 9; }
+.tl-s10 { grid-column-start: 10; } .tl-s11 { grid-column-start: 11; } .tl-s12 { grid-column-start: 12; }
+.tl-s13 { grid-column-start: 13; } .tl-s14 { grid-column-start: 14; } .tl-s15 { grid-column-start: 15; }
+.tl-s16 { grid-column-start: 16; }
+
+.tl-w1 { grid-column-end: span 1; } .tl-w2 { grid-column-end: span 2; } .tl-w3 { grid-column-end: span 3; }
+.tl-w4 { grid-column-end: span 4; } .tl-w5 { grid-column-end: span 5; } .tl-w6 { grid-column-end: span 6; }
+.tl-w7 { grid-column-end: span 7; } .tl-w8 { grid-column-end: span 8; } .tl-w9 { grid-column-end: span 9; }
+.tl-w10 { grid-column-end: span 10; } .tl-w11 { grid-column-end: span 11; } .tl-w12 { grid-column-end: span 12; }
+.tl-w13 { grid-column-end: span 13; } .tl-w14 { grid-column-end: span 14; } .tl-w15 { grid-column-end: span 15; }
+.tl-w16 { grid-column-end: span 16; }

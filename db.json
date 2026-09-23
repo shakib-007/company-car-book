@@ -1,0 +1,563 @@
+{
+  "users": [
+    {
+      "id": "u-admin",
+      "name": "Ayesha Chowdhury",
+      "email": "admin@company.com",
+      "password": "Admin123!",
+      "phone": "+8801711000001",
+      "role": "admin",
+      "department": "Fleet Operations",
+      "status": "active"
+    },
+    {
+      "id": "u-emp1",
+      "name": "Farhana Rahman",
+      "email": "farhana@company.com",
+      "password": "Emp123!",
+      "phone": "+8801711000002",
+      "role": "employee",
+      "department": "Engineering",
+      "status": "active"
+    },
+    {
+      "id": "u-emp2",
+      "name": "Imran Hossain",
+      "email": "imran@company.com",
+      "password": "Emp123!",
+      "phone": "+8801711000003",
+      "role": "employee",
+      "department": "Sales",
+      "status": "active"
+    },
+    {
+      "id": "u-emp3",
+      "name": "Nadia Khan",
+      "email": "nadia@company.com",
+      "password": "Emp123!",
+      "phone": "+8801711000004",
+      "role": "employee",
+      "department": "HR",
+      "status": "active"
+    },
+    {
+      "id": "u-drv1",
+      "name": "Karim Uddin",
+      "email": "karim@company.com",
+      "password": "Drv123!",
+      "phone": "+8801711000005",
+      "role": "driver",
+      "department": "Transport",
+      "status": "active"
+    },
+    {
+      "id": "u-drv2",
+      "name": "Shahidul Islam",
+      "email": "shahid@company.com",
+      "password": "Drv123!",
+      "phone": "+8801711000006",
+      "role": "driver",
+      "department": "Transport",
+      "status": "active"
+    },
+    {
+      "id": "u-drv3",
+      "name": "Rina Akter",
+      "email": "rina@company.com",
+      "password": "Drv123!",
+      "phone": "+8801711000007",
+      "role": "driver",
+      "department": "Transport",
+      "status": "active"
+    },
+    {
+      "id": "a53897ce-b0b4-4c72-b45f-786236864653",
+      "name": "Shakibur Rahman",
+      "email": "shakibur.rahman.fahim@gmail.com",
+      "password": "123456",
+      "phone": "+8801940915636",
+      "role": "employee",
+      "department": "HR",
+      "status": "active"
+    }
+  ],
+  "drivers": [
+    {
+      "id": "d-1",
+      "userId": "u-drv1",
+      "phone": "+8801711000005",
+      "licenseNumber": "DH-1234567",
+      "carId": "c-1",
+      "onLeaveDates": []
+    },
+    {
+      "id": "d-2",
+      "userId": "u-drv2",
+      "phone": "+8801711000006",
+      "licenseNumber": "DH-2345678",
+      "carId": "c-2",
+      "onLeaveDates": [
+        "2026-09-25"
+      ]
+    },
+    {
+      "id": "d-3",
+      "userId": "u-drv3",
+      "phone": "+8801711000007",
+      "licenseNumber": "DH-3456789",
+      "carId": "c-3",
+      "onLeaveDates": [
+        "2026-09-22"
+      ]
+    }
+  ],
+  "cars": [
+    {
+      "id": "c-1",
+      "model": "Toyota Premio",
+      "plateNumber": "DHA-11-1234",
+      "capacity": 4,
+      "fuelType": "petrol",
+      "status": "available"
+    },
+    {
+      "id": "c-2",
+      "model": "Honda Civic",
+      "plateNumber": "DHA-12-5678",
+      "capacity": 4,
+      "fuelType": "petrol",
+      "status": "available"
+    },
+    {
+      "id": "c-3",
+      "model": "Toyota Hiace",
+      "plateNumber": "DHA-13-9012",
+      "capacity": 12,
+      "fuelType": "diesel",
+      "status": "available"
+    },
+    {
+      "id": "c-4",
+      "model": "Nissan Sunny",
+      "plateNumber": "DHA-14-3456",
+      "capacity": 4,
+      "fuelType": "petrol",
+      "status": "inactive"
+    }
+  ],
+  "tripRequests": [
+    {
+      "id": "tr-pending",
+      "employeeId": "u-emp1",
+      "pickup": "Dhanmondi 27, Dhaka",
+      "destination": "Uttara Sector 7, Dhaka",
+      "startDateTime": "2026-09-23T14:00:00",
+      "endDateTime": "2026-09-23T17:00:00",
+      "tripType": "round_trip",
+      "passengers": 3,
+      "reason": "Department offsite visit",
+      "priority": "normal",
+      "status": "pending",
+      "driverId": null,
+      "carId": null,
+      "adminNote": "",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-22T08:15:00"
+    },
+    {
+      "id": "tr-assigned",
+      "employeeId": "u-emp1",
+      "pickup": "Banani 11, Dhaka",
+      "destination": "Hazrat Shahjalal International Airport",
+      "startDateTime": "2026-09-23T09:00:00",
+      "endDateTime": "2026-09-23T12:00:00",
+      "tripType": "one_way",
+      "passengers": 1,
+      "reason": "Airport drop for client workshop",
+      "priority": "urgent",
+      "status": "assigned",
+      "driverId": "d-2",
+      "carId": "c-2",
+      "adminNote": "Assigned Shahidul with Civic.",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-22T07:40:00"
+    },
+    {
+      "id": "tr-accepted",
+      "employeeId": "u-emp2",
+      "pickup": "Mirpur 10, Dhaka",
+      "destination": "Farmgate, Dhaka",
+      "startDateTime": "2026-09-24T10:00:00",
+      "endDateTime": "2026-09-24T13:00:00",
+      "tripType": "one_way",
+      "passengers": 1,
+      "reason": "Vendor pickup",
+      "priority": "normal",
+      "status": "accepted",
+      "driverId": "d-3",
+      "carId": "c-3",
+      "adminNote": "",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-21T16:20:00"
+    },
+    {
+      "id": "tr-progress",
+      "employeeId": "u-emp2",
+      "pickup": "Gulshan 1 Circle, Dhaka",
+      "destination": "Motijheel Commercial Area, Dhaka",
+      "startDateTime": "2026-09-22T08:00:00",
+      "endDateTime": "2026-09-22T18:00:00",
+      "tripType": "one_way",
+      "passengers": 2,
+      "reason": "Client meeting in Motijheel",
+      "priority": "normal",
+      "status": "completed",
+      "driverId": "d-1",
+      "carId": "c-1",
+      "adminNote": "Use Premio, keep AC on.",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-21T11:00:00"
+    },
+    {
+      "id": "tr-completed",
+      "employeeId": "u-emp1",
+      "pickup": "Dhanmondi 27, Dhaka",
+      "destination": "Uttara Sector 4, Dhaka",
+      "startDateTime": "2026-09-21T09:00:00",
+      "endDateTime": "2026-09-21T12:30:00",
+      "tripType": "one_way",
+      "passengers": 2,
+      "reason": "Head office meeting",
+      "priority": "normal",
+      "status": "completed",
+      "driverId": "d-2",
+      "carId": "c-2",
+      "adminNote": "",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-20T09:10:00"
+    },
+    {
+      "id": "tr-rejected",
+      "employeeId": "u-emp2",
+      "pickup": "Bashundhara R/A, Dhaka",
+      "destination": "Gulshan 2, Dhaka",
+      "startDateTime": "2026-09-20T15:00:00",
+      "endDateTime": "2026-09-20T16:30:00",
+      "tripType": "one_way",
+      "passengers": 1,
+      "reason": "Short client hop",
+      "priority": "normal",
+      "status": "rejected",
+      "driverId": null,
+      "carId": null,
+      "adminNote": "No driver available for this slot. Please rebook tomorrow morning.",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-20T10:05:00"
+    },
+    {
+      "id": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "employeeId": "a53897ce-b0b4-4c72-b45f-786236864653",
+      "pickup": "Kuril",
+      "destination": "Banani",
+      "startDateTime": "2026-09-24T09:00:00.000Z",
+      "endDateTime": "2026-09-24T14:00:00.000Z",
+      "tripType": "round_trip",
+      "passengers": 2,
+      "reason": "client meeting",
+      "priority": "normal",
+      "status": "completed",
+      "driverId": "d-1",
+      "carId": "c-1",
+      "adminNote": "",
+      "driverDeclineReason": "",
+      "createdAt": "2026-09-22T17:06:17.316Z"
+    }
+  ],
+  "tripLogs": [
+    {
+      "id": "tl-progress",
+      "requestId": "tr-progress",
+      "startedAt": "2026-09-22T08:05:00",
+      "endedAt": "2026-09-22T14:58:57.711Z",
+      "startOdometer": 45210,
+      "endOdometer": 0
+    },
+    {
+      "id": "tl-completed",
+      "requestId": "tr-completed",
+      "startedAt": "2026-09-21T09:05:00",
+      "endedAt": "2026-09-21T12:20:00",
+      "startOdometer": 38100,
+      "endOdometer": 38142
+    },
+    {
+      "id": "0da32de9-fe70-4f62-ac67-9d5245dc22e6",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "startedAt": "2026-09-22T17:14:45.786Z",
+      "endedAt": "2026-09-22T17:15:51.926Z",
+      "startOdometer": 0,
+      "endOdometer": 0
+    }
+  ],
+  "locations": [
+    {
+      "id": "loc-p1",
+      "requestId": "tr-progress",
+      "lat": 23.780887,
+      "lng": 90.414226,
+      "timestamp": "2026-09-22T08:06:00"
+    },
+    {
+      "id": "loc-p2",
+      "requestId": "tr-progress",
+      "lat": 23.7765,
+      "lng": 90.4151,
+      "timestamp": "2026-09-22T08:18:00"
+    },
+    {
+      "id": "loc-p3",
+      "requestId": "tr-progress",
+      "lat": 23.772,
+      "lng": 90.4158,
+      "timestamp": "2026-09-22T08:28:00"
+    },
+    {
+      "id": "loc-p4",
+      "requestId": "tr-progress",
+      "lat": 23.766,
+      "lng": 90.4164,
+      "timestamp": "2026-09-22T08:38:00"
+    },
+    {
+      "id": "loc-p5",
+      "requestId": "tr-progress",
+      "lat": 23.758,
+      "lng": 90.4168,
+      "timestamp": "2026-09-22T08:48:00"
+    },
+    {
+      "id": "loc-c1",
+      "requestId": "tr-completed",
+      "lat": 23.7465,
+      "lng": 90.3742,
+      "timestamp": "2026-09-21T09:06:00"
+    },
+    {
+      "id": "loc-c2",
+      "requestId": "tr-completed",
+      "lat": 23.755,
+      "lng": 90.379,
+      "timestamp": "2026-09-21T09:25:00"
+    },
+    {
+      "id": "loc-c3",
+      "requestId": "tr-completed",
+      "lat": 23.768,
+      "lng": 90.383,
+      "timestamp": "2026-09-21T09:45:00"
+    },
+    {
+      "id": "loc-c4",
+      "requestId": "tr-completed",
+      "lat": 23.79,
+      "lng": 90.387,
+      "timestamp": "2026-09-21T10:10:00"
+    },
+    {
+      "id": "loc-c5",
+      "requestId": "tr-completed",
+      "lat": 23.82,
+      "lng": 90.382,
+      "timestamp": "2026-09-21T10:40:00"
+    },
+    {
+      "id": "loc-c6",
+      "requestId": "tr-completed",
+      "lat": 23.85,
+      "lng": 90.38,
+      "timestamp": "2026-09-21T11:20:00"
+    },
+    {
+      "id": "loc-c7",
+      "requestId": "tr-completed",
+      "lat": 23.8759,
+      "lng": 90.3795,
+      "timestamp": "2026-09-21T12:15:00"
+    },
+    {
+      "id": "a8672fa0-3d4b-4a51-83b2-77f53f53411f",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "lat": 23.821531064622626,
+      "lng": 90.42414032853999,
+      "timestamp": "2026-09-22T17:14:54.519Z"
+    },
+    {
+      "id": "b854ed74-1e46-46b5-b5b4-89eb2a4362e8",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "lat": 23.821531064622626,
+      "lng": 90.42414032853999,
+      "timestamp": "2026-09-22T17:15:47.862Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n-1",
+      "userId": "u-admin",
+      "title": "New trip request",
+      "message": "Farhana Rahman requested a round trip to Uttara Sector 7.",
+      "type": "request_created",
+      "requestId": "tr-pending",
+      "isRead": true,
+      "createdAt": "2026-09-22T08:15:10"
+    },
+    {
+      "id": "n-2",
+      "userId": "u-emp1",
+      "title": "Trip assigned",
+      "message": "Your airport drop has been assigned to Shahidul Islam.",
+      "type": "assigned",
+      "requestId": "tr-assigned",
+      "isRead": false,
+      "createdAt": "2026-09-22T07:40:20"
+    },
+    {
+      "id": "n-3",
+      "userId": "u-drv2",
+      "title": "New assignment",
+      "message": "You have been assigned an airport drop on 23 Sep 09:00.",
+      "type": "assigned",
+      "requestId": "tr-assigned",
+      "isRead": false,
+      "createdAt": "2026-09-22T07:40:21"
+    },
+    {
+      "id": "n-4",
+      "userId": "u-admin",
+      "title": "Trip started",
+      "message": "Karim Uddin started the Motijheel client meeting trip.",
+      "type": "started",
+      "requestId": "tr-progress",
+      "isRead": true,
+      "createdAt": "2026-09-22T08:05:10"
+    },
+    {
+      "id": "n-5",
+      "userId": "u-emp2",
+      "title": "Trip started",
+      "message": "Your trip to Motijheel is now in progress.",
+      "type": "started",
+      "requestId": "tr-progress",
+      "isRead": true,
+      "createdAt": "2026-09-22T08:05:11"
+    },
+    {
+      "id": "fc8fa6a1-23b8-41c4-9181-060da7cb0a23",
+      "userId": "u-admin",
+      "title": "Trip completed",
+      "message": "Karim Uddin completed the trip to Motijheel Commercial Area, Dhaka.",
+      "type": "completed",
+      "requestId": "tr-progress",
+      "isRead": true,
+      "createdAt": "2026-09-22T14:58:57.785Z"
+    },
+    {
+      "id": "7480cae7-5cd5-455e-9edf-1803fdd2b21a",
+      "userId": "u-emp2",
+      "title": "Trip completed",
+      "message": "Your trip to Motijheel Commercial Area, Dhaka is complete. You can rate the driver.",
+      "type": "completed",
+      "requestId": "tr-progress",
+      "isRead": true,
+      "createdAt": "2026-09-22T14:58:57.803Z"
+    },
+    {
+      "id": "4ee27365-321a-446f-b61f-564f88f47bae",
+      "userId": "u-admin",
+      "title": "New trip request",
+      "message": "Shakibur Rahman requested a trip to Banani.",
+      "type": "request_created",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:06:17.389Z"
+    },
+    {
+      "id": "345ba267-bb01-48aa-90b2-0135aa39a35c",
+      "userId": "a53897ce-b0b4-4c72-b45f-786236864653",
+      "title": "Trip assigned",
+      "message": "Your trip to Banani was assigned to Karim Uddin.",
+      "type": "assigned",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:08:29.612Z"
+    },
+    {
+      "id": "8a37de7c-30fc-4e6d-a122-c61ef6638ac6",
+      "userId": "u-drv1",
+      "title": "New assignment",
+      "message": "You were assigned a trip for Shakibur Rahman to Banani.",
+      "type": "assigned",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:08:29.669Z"
+    },
+    {
+      "id": "bbc28a29-4da5-428f-99a9-292d9fbf32a4",
+      "userId": "u-admin",
+      "title": "Driver accepted",
+      "message": "Karim Uddin accepted the trip to Banani.",
+      "type": "accepted",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:10:37.902Z"
+    },
+    {
+      "id": "a59313c6-f04f-486e-9563-d22791392056",
+      "userId": "u-admin",
+      "title": "Trip started",
+      "message": "Karim Uddin started the trip to Banani.",
+      "type": "started",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:14:45.853Z"
+    },
+    {
+      "id": "834cad8a-66c3-418c-92d8-b4a546e467a6",
+      "userId": "a53897ce-b0b4-4c72-b45f-786236864653",
+      "title": "Trip started",
+      "message": "Your trip to Banani is now in progress.",
+      "type": "started",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:14:45.869Z"
+    },
+    {
+      "id": "97232b03-3ac2-4a9f-80bb-2f0c176b7808",
+      "userId": "u-admin",
+      "title": "Trip completed",
+      "message": "Karim Uddin completed the trip to Banani.",
+      "type": "completed",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:15:51.984Z"
+    },
+    {
+      "id": "2facb969-e541-43b5-bcb7-1877ba3045fa",
+      "userId": "a53897ce-b0b4-4c72-b45f-786236864653",
+      "title": "Trip completed",
+      "message": "Your trip to Banani is complete. You can rate the driver.",
+      "type": "completed",
+      "requestId": "6da1fc87-e6d2-4560-8569-166e19e7c83e",
+      "isRead": true,
+      "createdAt": "2026-09-22T17:15:52.018Z"
+    }
+  ],
+  "ratings": [
+    {
+      "id": "r-1",
+      "requestId": "tr-completed",
+      "driverId": "d-2",
+      "rating": 5,
+      "comment": "Punctual and professional drive."
+    }
+  ]
+}
