@@ -51,20 +51,6 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
         </svg>
       </button>
 
-      <label className="relative hidden min-w-0 flex-1 md:block">
-        <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" />
-          </svg>
-        </span>
-        <input
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          className="h-10 w-full max-w-md rounded-full border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-slate-300 focus:bg-white"
-        />
-      </label>
-
       <div className="ml-auto flex items-center gap-2 sm:gap-3">
         <NotificationBell />
         <span className="hidden h-8 w-px bg-slate-200 sm:block" aria-hidden />
