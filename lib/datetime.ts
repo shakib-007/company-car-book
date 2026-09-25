@@ -1,17 +1,27 @@
 import type { CarStatus, TripStatus, UserStatus } from "./types";
 
+const DHAKA = "Asia/Dhaka";
+
 export function formatDateTime(value: string | null | undefined): string {
   if (!value) return "-";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
+  return date.toLocaleString("en-GB", {
+    timeZone: DHAKA,
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 }
 
 export function formatDate(value: string | null | undefined): string {
   if (!value) return "-";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleDateString("en-GB", { dateStyle: "medium" });
+  return date.toLocaleDateString("en-GB", { timeZone: DHAKA, dateStyle: "medium" });
 }
 
 export function toDateTimeLocal(value: string): string {

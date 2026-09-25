@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { NavItem } from "@/lib/types";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
@@ -13,6 +14,11 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    items.forEach((item) => router.prefetch(item.href));
+  }, [items, router]);
 
   return (
     <div className="min-h-screen bg-[#f4f5f7] lg:flex">

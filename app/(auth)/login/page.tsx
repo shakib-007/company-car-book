@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Field } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { AuthSplit } from "@/components/auth/AuthSplit";
+import { beginNavigation } from "@/components/ui/NavigationProgress";
 
 const schema = Yup.object({
   email: Yup.string().email("Enter a valid email").required("Email is required"),
@@ -54,7 +55,8 @@ export default function LoginPage() {
               email: user.email,
               role: user.role,
             });
-            router.replace(homePath(user.role));
+            beginNavigation();
+            await router.replace(homePath(user.role));
           } catch {
             setFormError("Cannot reach the API. Start json-server on port 3001.");
             helpers.setSubmitting(false);

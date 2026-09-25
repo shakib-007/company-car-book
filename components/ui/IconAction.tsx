@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
+import { Spinner } from "./Spinner";
 
 export function IconAction({
   label,
   tone,
   onClick,
+  loading = false,
   children,
 }: {
   label: string;
   tone: "secondary" | "danger";
   onClick: () => void;
+  loading?: boolean;
   children: ReactNode;
 }) {
   const tones = {
@@ -21,9 +24,11 @@ export function IconAction({
       title={label}
       aria-label={label}
       onClick={onClick}
-      className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tones[tone]}`}
+      disabled={loading}
+      aria-busy={loading || undefined}
+      className={`inline-flex h-8 w-8 items-center justify-center rounded-lg disabled:cursor-wait disabled:opacity-60 ${tones[tone]}`}
     >
-      {children}
+      {loading ? <Spinner className="h-4 w-4" tone={tone === "danger" ? "white" : "brand"} /> : children}
     </button>
   );
 }

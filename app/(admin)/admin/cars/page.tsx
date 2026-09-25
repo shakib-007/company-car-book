@@ -12,30 +12,37 @@ import { DeleteIcon, EditIcon, IconAction } from "@/components/ui/IconAction";
 import { Modal } from "@/components/ui/Modal";
 import { CarForm, type CarFormValues } from "@/components/forms/CarForm";
 import type { Car } from "@/lib/types";
+import { defer } from "@/lib/defer";
 
 export default function CarsPage() {
   const { data, loading, reload } = usePolling(() => api.getCars(), 10000);
   const [editing, setEditing] = useState<Car | null>(null);
   const [creating, setCreating] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const cars = data || [];
 
   async function createCar(values: CarFormValues) {
     await api.createCar({ id: newId(), ...values, capacity: Number(values.capacity) });
     setCreating(false);
-    await reload();
+    defer(reload());
   }
 
   async function updateCar(values: CarFormValues) {
     if (!editing) return;
     await api.updateCar(editing.id, { ...values, capacity: Number(values.capacity) });
     setEditing(null);
-    await reload();
+    defer(reload());
   }
 
   async function removeCar(id: string) {
     if (!confirm("Delete this car?")) return;
-    await api.deleteCar(id);
-    await reload();
+    setDeletingId(id);
+    try {
+      await api.deleteCar(id);
+      defer(reload());
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -81,7 +88,12 @@ export default function CarsPage() {
                       <IconAction label="Edit" tone="secondary" onClick={() => setEditing(car)}>
                         <EditIcon />
                       </IconAction>
-                      <IconAction label="Delete" tone="danger" onClick={() => removeCar(car.id)}>
+                      <IconAction
+                        label="Delete"
+                        tone="danger"
+                        loading={deletingId === car.id}
+                        onClick={() => removeCar(car.id)}
+                      >
                         <DeleteIcon />
                       </IconAction>
                     </div>

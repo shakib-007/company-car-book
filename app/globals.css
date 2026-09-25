@@ -18,6 +18,44 @@ body {
   font-family: inherit;
 }
 
+.leaflet-div-icon.driver-pin,
+.leaflet-div-icon.place-pin {
+  background: transparent;
+  border: none;
+}
+
+.nav-progress {
+  width: 35%;
+  animation: nav-progress 1s ease-in-out infinite;
+}
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+.driver-pulse {
+  border-radius: 999px;
+  animation: driver-pulse 1.8s ease-out infinite;
+}
+
+@keyframes driver-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(15, 118, 110, 0);
+  }
+}
+
+.driver-trip-map .leaflet-bottom {
+  bottom: 6.5rem;
+}
+
 .timeline-row {
   display: grid;
   grid-template-columns: 10rem repeat(16, minmax(0, 1fr));

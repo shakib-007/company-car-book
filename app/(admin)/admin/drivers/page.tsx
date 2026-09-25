@@ -12,6 +12,7 @@ import { DeleteIcon, EditIcon, IconAction } from "@/components/ui/IconAction";
 import { Modal } from "@/components/ui/Modal";
 import { DriverForm, type DriverFormValues } from "@/components/forms/DriverForm";
 import type { Driver, User } from "@/lib/types";
+import { defer } from "@/lib/defer";
 
 function parseLeave(value: string): string[] {
   return value
@@ -27,6 +28,7 @@ export default function DriversPage() {
   }, 10000);
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<{ driver: Driver; user?: User } | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const drivers = data?.drivers || [];
   const users = data?.users || [];
@@ -42,26 +44,28 @@ export default function DriversPage() {
 
   async function createDriver(values: DriverFormValues) {
     const userId = newId();
-    await api.createUser({
-      id: userId,
-      name: values.name,
-      email: values.email,
-      password: values.password,
-      phone: values.phone,
-      role: "driver",
-      department: "Transport",
-      status: "active",
-    });
-    await api.createDriver({
-      id: newId(),
-      userId,
-      phone: values.phone,
-      licenseNumber: values.licenseNumber,
-      carId: values.carId,
-      onLeaveDates: parseLeave(values.onLeaveDates),
-    });
+    await Promise.all([
+      api.createUser({
+        id: userId,
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        role: "driver",
+        department: "Transport",
+        status: "active",
+      }),
+      api.createDriver({
+        id: newId(),
+        userId,
+        phone: values.phone,
+        licenseNumber: values.licenseNumber,
+        carId: values.carId,
+        onLeaveDates: parseLeave(values.onLeaveDates),
+      }),
+    ]);
     setCreating(false);
-    await reload();
+    defer(reload());
   }
 
   async function updateDriver(values: DriverFormValues) {
@@ -72,22 +76,31 @@ export default function DriversPage() {
       phone: values.phone,
     };
     if (values.password) patch.password = values.password;
-    await api.updateUser(editing.driver.userId, patch);
-    await api.updateDriver(editing.driver.id, {
-      phone: values.phone,
-      licenseNumber: values.licenseNumber,
-      carId: values.carId,
-      onLeaveDates: parseLeave(values.onLeaveDates),
-    });
+    await Promise.all([
+      api.updateUser(editing.driver.userId, patch),
+      api.updateDriver(editing.driver.id, {
+        phone: values.phone,
+        licenseNumber: values.licenseNumber,
+        carId: values.carId,
+        onLeaveDates: parseLeave(values.onLeaveDates),
+      }),
+    ]);
     setEditing(null);
-    await reload();
+    defer(reload());
   }
 
   async function removeDriver(driver: Driver) {
     if (!confirm("Delete this driver?")) return;
-    await api.deleteDriver(driver.id);
-    await api.updateUser(driver.userId, { status: "inactive" });
-    await reload();
+    setDeletingId(driver.id);
+    try {
+      await Promise.all([
+        api.deleteDriver(driver.id),
+        api.updateUser(driver.userId, { status: "inactive" }),
+      ]);
+      defer(reload());
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -136,7 +149,12 @@ export default function DriversPage() {
                         <IconAction label="Edit" tone="secondary" onClick={() => setEditing({ driver, user })}>
                           <EditIcon />
                         </IconAction>
-                        <IconAction label="Delete" tone="danger" onClick={() => removeDriver(driver)}>
+                        <IconAction
+                          label="Delete"
+                          tone="danger"
+                          loading={deletingId === driver.id}
+                          onClick={() => removeDriver(driver)}
+                        >
                           <DeleteIcon />
                         </IconAction>
                       </div>

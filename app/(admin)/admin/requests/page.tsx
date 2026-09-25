@@ -15,6 +15,7 @@ import { Modal } from "@/components/ui/Modal";
 import { AssignForm } from "@/components/forms/AssignForm";
 import { NoteForm } from "@/components/forms/NoteForm";
 import type { TripRequest } from "@/lib/types";
+import { defer } from "@/lib/defer";
 
 export default function AdminRequestsPage() {
   const { data, loading, reload } = usePolling(async () => {
@@ -72,63 +73,65 @@ export default function AdminRequestsPage() {
       carId: values.carId,
       driverDeclineReason: "",
     });
-    await notifyUser(
-      assigning.employeeId,
-      "Trip assigned",
-      `Your trip to ${assigning.destination} was assigned to ${driverUser?.name || "a driver"}.`,
-      "assigned",
-      assigning.id,
+    defer(
+      Promise.all([
+        notifyUser(
+          assigning.employeeId,
+          "Trip assigned",
+          `Your trip to ${assigning.destination} was assigned to ${driverUser?.name || "a driver"}.`,
+          "assigned",
+          assigning.id,
+        ),
+        previousDriverId && previousDriverId !== values.driverId
+          ? notifyDriverUser(
+              previousDriverId,
+              "Trip reassigned",
+              `The trip for ${employee?.name || "an employee"} was reassigned to another driver.`,
+              "reassigned",
+              assigning.id,
+            )
+          : Promise.resolve(),
+        notifyDriverUser(
+          values.driverId,
+          previousDriverId && previousDriverId !== values.driverId ? "Trip reassigned to you" : "New assignment",
+          previousDriverId && previousDriverId !== values.driverId
+            ? `You were assigned the trip for ${employee?.name || "an employee"} to ${assigning.destination}.`
+            : `You were assigned a trip for ${employee?.name || "an employee"} to ${assigning.destination}.`,
+          previousDriverId && previousDriverId !== values.driverId ? "reassigned" : "assigned",
+          assigning.id,
+        ),
+      ]),
     );
-    if (previousDriverId && previousDriverId !== values.driverId) {
-      await notifyDriverUser(
-        previousDriverId,
-        "Trip reassigned",
-        `The trip for ${employee?.name || "an employee"} was reassigned to another driver.`,
-        "reassigned",
-        assigning.id,
-      );
-      await notifyDriverUser(
-        values.driverId,
-        "Trip reassigned to you",
-        `You were assigned the trip for ${employee?.name || "an employee"} to ${assigning.destination}.`,
-        "reassigned",
-        assigning.id,
-      );
-    } else {
-      await notifyDriverUser(
-        values.driverId,
-        "New assignment",
-        `You were assigned a trip for ${employee?.name || "an employee"} to ${assigning.destination}.`,
-        "assigned",
-        assigning.id,
-      );
-    }
     setAssigning(null);
-    await reload();
+    defer(reload());
   }
 
   async function applyNote(adminNote: string) {
     if (!noting) return;
     const { request, action } = noting;
     await api.updateTripRequest(request.id, { status: action, adminNote });
-    await notifyUser(
-      request.employeeId,
-      action === "rejected" ? "Trip rejected" : "Trip cancelled",
-      adminNote,
-      action,
-      request.id,
+    defer(
+      Promise.all([
+        notifyUser(
+          request.employeeId,
+          action === "rejected" ? "Trip rejected" : "Trip cancelled",
+          adminNote,
+          action,
+          request.id,
+        ),
+        request.driverId
+          ? notifyDriverUser(
+              request.driverId,
+              action === "rejected" ? "Trip rejected" : "Trip cancelled",
+              `A trip you were linked to was ${action}. ${adminNote}`,
+              action,
+              request.id,
+            )
+          : Promise.resolve(),
+      ]),
     );
-    if (request.driverId) {
-      await notifyDriverUser(
-        request.driverId,
-        action === "rejected" ? "Trip rejected" : "Trip cancelled",
-        `A trip you were linked to was ${action}. ${adminNote}`,
-        action,
-        request.id,
-      );
-    }
     setNoting(null);
-    await reload();
+    defer(reload());
   }
 
   return (

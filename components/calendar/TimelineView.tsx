@@ -7,6 +7,12 @@ const START_HOUR = 6;
 const END_HOUR = 22;
 const HOURS = Array.from({ length: END_HOUR - START_HOUR }, (_, i) => START_HOUR + i);
 
+function formatHourLabel(hour: number): string {
+  const suffix = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12} ${suffix}`;
+}
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -36,7 +42,7 @@ export function TimelineView({
           <div className="px-3 py-2 font-medium">Driver</div>
           {HOURS.map((hour) => (
             <div key={hour} className="border-l border-slate-200 px-2 py-2">
-              {String(hour).padStart(2, "0")}:00
+              {formatHourLabel(hour)}
             </div>
           ))}
         </div>

@@ -6,6 +6,8 @@ import { notifyAdmins } from "@/lib/notifications";
 import { useAuth } from "@/hooks/useAuth";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { TripRequestForm, type TripFormValues } from "@/components/forms/TripRequestForm";
+import { beginNavigation } from "@/components/ui/NavigationProgress";
+import { defer } from "@/lib/defer";
 
 export default function NewRequestPage() {
   const { session } = useAuth();
@@ -31,13 +33,16 @@ export default function NewRequestPage() {
       driverDeclineReason: "",
       createdAt: new Date().toISOString(),
     });
-    await notifyAdmins(
-      "New trip request",
-      `${session.name} requested a trip to ${values.destination}.`,
-      "request_created",
-      request.id,
+    defer(
+      notifyAdmins(
+        "New trip request",
+        `${session.name} requested a trip to ${values.destination}.`,
+        "request_created",
+        request.id,
+      ),
     );
-    router.push(`/employee/requests/${request.id}`);
+    beginNavigation();
+    await router.push(`/employee/requests/${request.id}`);
   }
 
   return (

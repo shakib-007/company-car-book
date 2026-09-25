@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { LoadingState } from "@/components/ui/LoadingState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { TripRequestForm, type TripFormValues } from "@/components/forms/TripRequestForm";
+import { beginNavigation } from "@/components/ui/NavigationProgress";
 
 export default function EditRequestPage() {
   const params = useParams<{ id: string }>();
@@ -36,7 +37,8 @@ export default function EditRequestPage() {
       reason: values.reason,
       priority: values.priority,
     });
-    router.push(`/employee/requests/${id}`);
+    beginNavigation();
+    await router.push(`/employee/requests/${id}`);
   }
 
   return (

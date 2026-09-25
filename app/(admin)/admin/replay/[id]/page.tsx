@@ -31,7 +31,10 @@ export default function ReplayPage() {
         subtitle={`${data.request.pickup} to ${data.request.destination} · ${formatDateTime(data.request.startDateTime)}`}
       />
       {data.points.length === 0 ? (
-        <EmptyState title="No GPS points recorded for this trip" />
+        <EmptyState
+          title="No GPS points recorded for this trip"
+          hint="Points are saved only while the trip is in progress, the driver app stays open, and the browser is allowed to use location. A trip that ends before the first point is stored cannot be replayed."
+        />
       ) : (
         <ReplayMap points={data.points} />
       )}

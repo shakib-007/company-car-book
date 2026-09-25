@@ -7,7 +7,7 @@ const dbFile = path.join(__dirname, "..", "db.json");
 
 const server = jsonServer.create();
 const router = jsonServer.router(dbFile);
-const middlewares = jsonServer.defaults({ logger: true });
+const middlewares = jsonServer.defaults({ logger: false });
 
 server.use(middlewares);
 server.use(jsonServer.bodyParser);

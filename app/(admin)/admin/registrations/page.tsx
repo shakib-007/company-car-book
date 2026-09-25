@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { api } from "@/lib/api";
 import { usePolling } from "@/hooks/usePolling";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -11,10 +12,17 @@ import { Button } from "@/components/ui/Button";
 export default function RegistrationsPage() {
   const { data, loading, reload } = usePolling(() => api.getUsers({ role: "employee" }), 8000);
   const pending = (data || []).filter((user) => user.status === "pending");
+  const [busyKey, setBusyKey] = useState<string | null>(null);
 
   async function setStatus(id: string, status: "active" | "inactive") {
-    await api.updateUser(id, { status });
-    await reload();
+    const key = `${id}:${status}`;
+    setBusyKey(key);
+    try {
+      await api.updateUser(id, { status });
+      await reload();
+    } finally {
+      setBusyKey(null);
+    }
   }
 
   return (
@@ -49,11 +57,22 @@ export default function RegistrationsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
-                      <Button type="button" onClick={() => setStatus(user.id, "active")}>
-                        Approve
+                      <Button
+                        type="button"
+                        loading={busyKey === `${user.id}:active`}
+                        disabled={busyKey !== null}
+                        onClick={() => setStatus(user.id, "active")}
+                      >
+                        {busyKey === `${user.id}:active` ? "Saving" : "Approve"}
                       </Button>
-                      <Button type="button" variant="danger" onClick={() => setStatus(user.id, "inactive")}>
-                        Reject
+                      <Button
+                        type="button"
+                        variant="danger"
+                        loading={busyKey === `${user.id}:inactive`}
+                        disabled={busyKey !== null}
+                        onClick={() => setStatus(user.id, "inactive")}
+                      >
+                        {busyKey === `${user.id}:inactive` ? "Saving" : "Reject"}
                       </Button>
                     </div>
                   </td>

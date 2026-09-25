@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { api, newId } from "@/lib/api";
 import { notifyAdmins, notifyDriverUser, notifyUser } from "@/lib/notifications";
@@ -13,12 +14,15 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
 import { RatingForm } from "@/components/forms/RatingForm";
+import { beginNavigation } from "@/components/ui/NavigationProgress";
+import { defer } from "@/lib/defer";
 
 export default function EmployeeRequestDetailPage() {
   const params = useParams<{ id: string }>();
   const id = params.id;
   const { session } = useAuth();
   const router = useRouter();
+  const [cancelling, setCancelling] = useState(false);
   const { data, loading, reload } = usePolling(
     async () => {
       const [request, ratings, users, drivers, cars] = await Promise.all([
@@ -49,30 +53,39 @@ export default function EmployeeRequestDetailPage() {
 
   async function cancel() {
     if (!confirm("Cancel this trip request?")) return;
-    await api.updateTripRequest(request.id, { status: "cancelled" });
-    await notifyUser(
-      request.employeeId,
-      "Trip cancelled",
-      `Your trip to ${request.destination} was cancelled.`,
-      "cancelled",
-      request.id,
-    );
-    if (request.driverId) {
-      await notifyDriverUser(
-        request.driverId,
-        "Trip cancelled",
-        `The trip to ${request.destination} was cancelled.`,
-        "cancelled",
-        request.id,
+    setCancelling(true);
+    try {
+      await api.updateTripRequest(request.id, { status: "cancelled" });
+      defer(
+        Promise.all([
+          notifyUser(
+            request.employeeId,
+            "Trip cancelled",
+            `Your trip to ${request.destination} was cancelled.`,
+            "cancelled",
+            request.id,
+          ),
+          request.driverId
+            ? notifyDriverUser(
+                request.driverId,
+                "Trip cancelled",
+                `The trip to ${request.destination} was cancelled.`,
+                "cancelled",
+                request.id,
+              )
+            : Promise.resolve(),
+          notifyAdmins(
+            "Trip cancelled",
+            `${session?.name || "An employee"} cancelled a trip to ${request.destination}.`,
+            "cancelled",
+            request.id,
+          ),
+        ]),
       );
+      await reload();
+    } finally {
+      setCancelling(false);
     }
-    await notifyAdmins(
-      "Trip cancelled",
-      `${session?.name || "An employee"} cancelled a trip to ${request.destination}.`,
-      "cancelled",
-      request.id,
-    );
-    await reload();
   }
 
   async function rate(rating: number, comment: string) {
@@ -100,8 +113,8 @@ export default function EmployeeRequestDetailPage() {
                   Edit
                 </Button>
               </Link>
-              <Button type="button" variant="danger" onClick={cancel}>
-                Cancel
+              <Button type="button" variant="danger" loading={cancelling} onClick={cancel}>
+                {cancelling ? "Cancelling" : "Cancel"}
               </Button>
             </>
           ) : null
@@ -140,7 +153,14 @@ export default function EmployeeRequestDetailPage() {
           )}
         </div>
       ) : null}
-      <Button type="button" variant="ghost" onClick={() => router.push("/employee/requests")}>
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={() => {
+          beginNavigation();
+          router.push("/employee/requests");
+        }}
+      >
         Back to list
       </Button>
     </div>

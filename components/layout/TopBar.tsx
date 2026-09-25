@@ -4,15 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "./NotificationBell";
+import { beginNavigation } from "@/components/ui/NavigationProgress";
+import { Spinner } from "@/components/ui/Spinner";
 
 export function TopBar({ onMenu }: { onMenu: () => void }) {
   const { session, setSession } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   function logout() {
+    setLeaving(true);
     setSession(null);
+    beginNavigation();
     router.replace("/login");
   }
 
@@ -86,9 +91,11 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
                 type="button"
                 role="menuitem"
                 onClick={logout}
-                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-slate-100"
+                disabled={leaving}
+                className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:cursor-wait"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                {leaving ? <Spinner className="h-4 w-4" /> : null}
+                <svg className={`h-4 w-4 ${leaving ? "hidden" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H4m0 0 3.5-3.5M4 12l3.5 3.5M10 7V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2v-1" />
                 </svg>
                 Log out

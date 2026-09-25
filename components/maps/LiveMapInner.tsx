@@ -1,7 +1,7 @@
 "use client";
 
-import { Fragment, useMemo } from "react";
-import { MapContainer, Marker, Popup, Polyline, TileLayer } from "react-leaflet";
+import { Fragment, useEffect, useMemo } from "react";
+import { MapContainer, Marker, Popup, Polyline, TileLayer, useMap } from "react-leaflet";
 import type { LocationPoint, TripRequest } from "@/lib/types";
 import { ensureLeafletIcons } from "./leafletIcons";
 
@@ -16,21 +16,36 @@ export type LiveTrip = {
   points: LocationPoint[];
 };
 
+function FitTrips({ points }: { points: [number, number][] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (points.length === 0) return;
+    if (points.length === 1) {
+      map.setView(points[0], 12);
+      return;
+    }
+    map.fitBounds(points, { padding: [40, 40], maxZoom: 12 });
+  }, [map, points]);
+  return null;
+}
+
 export default function LiveMapInner({ trips }: { trips: LiveTrip[] }) {
-  const center = useMemo<[number, number]>(() => {
-    const latest = trips
-      .map((trip) => trip.points[trip.points.length - 1])
-      .filter(Boolean);
-    if (latest[0]) return [latest[0].lat, latest[0].lng];
-    return DHAKA;
-  }, [trips]);
+  const latestPoints = useMemo<[number, number][]>(
+    () =>
+      trips
+        .map((trip) => trip.points[trip.points.length - 1])
+        .filter(Boolean)
+        .map((point) => [point.lat, point.lng]),
+    [trips],
+  );
 
   return (
-    <MapContainer center={center} zoom={13} className="h-full w-full rounded-xl" scrollWheelZoom>
+    <MapContainer center={latestPoints[0] || DHAKA} zoom={13} className="h-full w-full rounded-xl" scrollWheelZoom>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <FitTrips points={latestPoints} />
       {trips.map((trip) => {
         const latest = trip.points[trip.points.length - 1];
         if (!latest) return null;

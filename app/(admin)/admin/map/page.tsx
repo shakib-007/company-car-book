@@ -35,7 +35,7 @@ export default function LiveMapPage() {
 
   return (
     <div>
-      <PageHeader title="Live map" subtitle="In-progress trips polled from GPS location posts" />
+      <PageHeader title="Live map" subtitle="Each in-progress trip is shown on its assigned route" />
       {loading && !data ? (
         <LoadingState />
       ) : !data || data.length === 0 ? (

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, Polyline, TileLayer, useMap } from "react-leaflet";
+import { formatDateTime } from "@/lib/datetime";
 import type { LocationPoint } from "@/lib/types";
 import { ensureLeafletIcons } from "./leafletIcons";
 import { Button } from "@/components/ui/Button";
@@ -55,7 +56,7 @@ export default function ReplayMapInner({ points }: { points: LocationPoint[] }) 
           Pause
         </Button>
         <p className="text-xs text-slate-500">
-          {points[index] ? new Date(points[index].timestamp).toLocaleString() : "No GPS points"}
+          {points[index] ? formatDateTime(points[index].timestamp) : "No GPS points"}
         </p>
       </div>
       <div className="min-h-0 flex-1">
